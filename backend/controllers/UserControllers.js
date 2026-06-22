@@ -2,14 +2,13 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+import fs from "fs";
+import pdfParse from "pdf-parse";
 
 const RegisterUser = async (req, res) => {
-  // console.log(req.body);
-  //   console.log(req.headers);
-  //   console.log(req.params);
-  //   console.log(req.query);
-  //   console.log(req.cookies);
 
+  let filePath = "";
+  
   try {
     let {
       name,
@@ -19,32 +18,32 @@ const RegisterUser = async (req, res) => {
       LinkedInUsername,
       instagramUsername,
       twitterUsername,
-      description
+      description,
     } = req.body;
 
+    if (!req.file) {
+      throw new Error("Please upload resume");
+    }
+
+    filePath = req.file.path;
+
     if (!name || !email || !oldPassword) {
-      throw new Error("Please provide the completed details");
+      throw new Error("Please provide complete details");
     }
 
-    const existingUser = await User.findOne({email});
+    const existingUser = await User.findOne({ email });
 
-    if(existingUser){
-        throw new Error("User already exsists");
-    }
-
-    if (LinkedInUsername == "") {
-      LinkedInUsername = "Not Available";
-    }
-    if (instagramUsername == "") {
-      instagramUsername = "Not Available";
-    }
-    if (twitterUsername == "") {
-      twitterUsername = "Not Available";
+    if (existingUser) {
+      throw new Error("User already exists");
     }
 
     const password = await bcrypt.hash(oldPassword, 12);
 
-    const newUser = await User.create({
+    const fileBuffer = fs.readFileSync(filePath);
+    const parseData = await pdfParse(fileBuffer);
+    const resumeText = parseData.text;
+
+    await User.create({
       name,
       email,
       password,
@@ -52,20 +51,23 @@ const RegisterUser = async (req, res) => {
       LinkedInUsername,
       instagramUsername,
       twitterUsername,
-      description
+      description,
+      resumeText,
     });
 
     return res.status(201).json({
       success: true,
-      message: "User created successfully!",
+      message: "User created successfully",
     });
   } catch (error) {
-    console.error("Error creating user:", error);
     return res.status(500).json({
       success: false,
-      message: "Server error, failed to create user.",
       error: error.message,
     });
+  } finally {
+    if (filePath) {
+      await fs.promises.unlink(filePath).catch(() => {});
+    }
   }
 };
 
@@ -112,7 +114,7 @@ const LoginUser = async (req, res) => {
       await user.save();
 
       res
-        .status(201)
+        .status(200)
         .cookie("accessToken", access_token, {
           httpOnly: true,
           secure: false,
@@ -145,7 +147,7 @@ const LoginUser = async (req, res) => {
 
 const LogoutUser = async (req, res) => {
   try {
-    const { email } = req.body;
+    const email = req.user.email;
     if (!email) {
       throw new Error("Please login !!");
     }

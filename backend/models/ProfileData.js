@@ -17,9 +17,6 @@ const profileData = mongoose.Schema(
     twitterData: {
       type: Object,
     },
-    resumeText: {
-      type: String,
-    },
     llmSummry: {
       type: String,
     },
