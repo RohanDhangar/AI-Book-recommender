@@ -9,22 +9,20 @@ const profileData = mongoose.Schema(
       required: true,
     },
     linkedInData: {
-      type: Object,
+      type: String,
     },
     instagramData: {
-      type: Object,
+      type: String,
     },
     twitterData: {
-      type: Object,
-    },
-    llmSummry: {
       type: String,
     },
     profileAnalysis: {
-      interests: [String],
-      careerGoal: String,
-      skillLevel: String,
+      recommendedCategories: [String],
+      learningGoals: [String],
+      technicalLevel: String,
       personalityTraits: [String],
+      careerStage: String
     },
     recommendedBooks: {
       type: [

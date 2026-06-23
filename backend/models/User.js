@@ -43,6 +43,10 @@ const userSchma = new mongoose.Schema(
     resumeText: {
       type: String,
     },
+    recommendationGenerated: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

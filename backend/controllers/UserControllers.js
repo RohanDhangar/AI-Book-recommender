@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import fs from "fs";
-import pdfParse from "pdf-parse";
+import * as pdfParse from "pdf-parse";
 
 const RegisterUser = async (req, res) => {
 

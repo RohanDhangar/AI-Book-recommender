@@ -5,9 +5,11 @@ import {
   LogoutUser,
   RegisterUser,
 } from "./controllers/UserControllers.js";
-import refreshAccessToken from "./controllers/RefreshToken.js";
+import RefreshAccessToken from "./controllers/RefreshToken.js";
 import verifyIdentity from "./middlewares/AuthMiddleware.js";
 import upload from "./middlewares/Upload.js";
+import LLM_ProfileAnalysis from "./controllers/ProfileAnalysis.js";
+
 const app = express();
 const port = 2000;
 
@@ -21,9 +23,11 @@ app.get("/", verifyIdentity, (req, res) => {
 });
 
 app.post("/register", upload.single("resume"), RegisterUser);
-app.post("/refresh-token", refreshAccessToken);
+app.post("/refresh-token", RefreshAccessToken);
 app.post("/login", LoginUser);
 app.post("/logout", LogoutUser);
+
+app.get("/profile-processed", LLM_ProfileAnalysis) // to be added authmiddleware for protected route
 
 app.listen(port, () => {
   console.log(`server started at ${port}`);

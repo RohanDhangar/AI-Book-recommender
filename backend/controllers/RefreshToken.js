@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-import User from "../models/User";
+import User from "../models/User.js";
 
-const refreshAccessToken = async (req, res) => {
+const RefreshAccessToken = async (req, res) => {
   const token = req.cookies.refreshToken;
 
   if (!token) {
@@ -54,4 +54,4 @@ const refreshAccessToken = async (req, res) => {
   }
 };
 
-export default refreshAccessToken;
+export default RefreshAccessToken;
