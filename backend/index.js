@@ -8,6 +8,7 @@ import {
 import RefreshAccessToken from "./controllers/RefreshToken.js";
 import verifyIdentity from "./middlewares/AuthMiddleware.js";
 import upload from "./middlewares/Upload.js";
+import RecommendedBooks from "./controllers/BookRecommendation.js"
 import LLM_ProfileAnalysis from "./controllers/ProfileAnalysis.js";
 
 const app = express();
@@ -27,7 +28,8 @@ app.post("/refresh-token", RefreshAccessToken);
 app.post("/login", LoginUser);
 app.post("/logout", LogoutUser);
 
-app.get("/profile-processed", LLM_ProfileAnalysis) // to be added authmiddleware for protected route
+app.get("/profile-processed", LLM_ProfileAnalysis); // to be added authmiddleware for protected route
+app.get("/recommended-Books", RecommendedBooks); // to be added authmiddleware for protected route
 
 app.listen(port, () => {
   console.log(`server started at ${port}`);
