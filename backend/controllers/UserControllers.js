@@ -3,12 +3,11 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import fs from "fs";
-import * as pdfParse from "pdf-parse";
+import { PDFParse } from "pdf-parse";
 
 const RegisterUser = async (req, res) => {
-
   let filePath = "";
-  
+
   try {
     let {
       name,
@@ -26,7 +25,8 @@ const RegisterUser = async (req, res) => {
     }
 
     filePath = req.file.path;
-
+    // console.log("I have reached this point");
+    // console.log(name, email, oldPassword);
     if (!name || !email || !oldPassword) {
       throw new Error("Please provide complete details");
     }
@@ -40,8 +40,17 @@ const RegisterUser = async (req, res) => {
     const password = await bcrypt.hash(oldPassword, 12);
 
     const fileBuffer = fs.readFileSync(filePath);
-    const parseData = await pdfParse(fileBuffer);
-    const resumeText = parseData.text;
+    const parser = new PDFParse({
+      data: fileBuffer,
+    });
+
+    const result = await parser.getText();
+
+    console.log(result);
+
+    const resumeText = result.text;
+
+    await parser.destroy();
 
     await User.create({
       name,
@@ -147,7 +156,7 @@ const LoginUser = async (req, res) => {
 
 const LogoutUser = async (req, res) => {
   try {
-    const email = req.user.email;
+    const email = req.email;
     if (!email) {
       throw new Error("Please login !!");
     }

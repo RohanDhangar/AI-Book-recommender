@@ -5,6 +5,9 @@ import Layout from "./components/Layout";
 import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
 import LogoutButton from "./components/LogoutButton";
+import CompleteYourProfile from "./components/CompleteProfile";
+import ProfilePage from "./components/ProfilePage";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 function App() {
   return (
@@ -14,11 +17,11 @@ function App() {
           <Route index element={<Home />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+          <Route path="complete-profile" element={<CompleteYourProfile />} />
           <Route path="listBooks" element={<ListBooks />} />
-          {/* <Route path="profile/:id" element={<ProfilePage />} /> */}
-          <Route path="logout" element={<LogoutButton />} />
+          <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="logout" element={<ProtectedRoute><LogoutButton /></ProtectedRoute>} />
           {/* <Route path="suggested-books" element={<SuggestedBooks />} /> */}
-          {/* <Route path="book-details/:id" element={<BookDetails />} /> */}
         </Route>
       </Routes>
     </BrowserRouter>

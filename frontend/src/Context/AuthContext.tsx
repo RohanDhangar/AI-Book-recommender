@@ -1,46 +1,58 @@
 import { createContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { jwtDecode } from 'jwt-decode';
-
-
+import { jwtDecode } from "jwt-decode";
 interface User {
-    id: string,
-    email: string
+  id: string;
+  email: string;
 }
 
 export const UserDetails = createContext({
-    isAuthenticated: false,
-    setIsAuthenticated: (isAuthenticated: boolean) => { },
-    user: null,
-    setUser: (user: any) => { }
+  isAuthenticated: false,
+  setIsAuthenticated: (isAuthenticated: boolean) => {},
+  user: null,
+  setUser: (user: User) => {},
 });
 
+export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [cookie] = useCookies(["accessToken", "refreshToken"]);
 
+  useEffect(() => {
+    const checkAuth = () => {
+      if (cookie.accessToken) {
+        try {
+          const decoded = jwtDecode<User>(cookie.accessToken);
 
-export const UserProvider = ({children}) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [user, setUser] = useState<User | any>(null);
-    const [cookie] = useCookies(['accessToken', 'refreshToken']);
-
-    useEffect(() => {
-        if (cookie.accessToken) {
-            setIsAuthenticated(true);
-            const decoded:any = jwtDecode(cookie.accessToken);
-            setUser(decoded);
+          setIsAuthenticated(true);
+          setUser(decoded);
+        } catch (error) {
+          console.error("Error decoding access token:", error);
+          setIsAuthenticated(false);
+          setUser(null);
         }
-    }, [cookie.accessToken])
+      }
+      setIsLoading(false);
+    };
 
-    return (
-        <UserDetails.Provider 
-        value={{
-            isAuthenticated,
-            setIsAuthenticated,
-            user,
-            setUser
-        }}
-        >
-        {children}
-        </UserDetails.Provider>
-    );
+    checkAuth();
+  }, [cookie.accessToken]);
 
-}
+  if (isLoading) {
+    return <div>Loading... from context component</div>;
+  }
+
+  return (
+    <UserDetails.Provider
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        user,
+        setUser,
+      }}
+    >
+      {children}
+    </UserDetails.Provider>
+  );
+};

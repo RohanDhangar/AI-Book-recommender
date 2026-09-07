@@ -17,7 +17,7 @@ function NavBar() {
   return (
     <nav>
       <Link to="/suggested-books">Suggested Books</Link>
-      <Link to="/profile/:id">Profile</Link>
+      <Link to="/profile">Profile</Link>
       <Link to="/logout">Logout</Link>
     </nav>
   );
