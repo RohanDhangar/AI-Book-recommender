@@ -8,7 +8,7 @@ const RefreshAccessToken = async (req, res) => {
   if (!token) {
     return res.status(401).json({
       message: "Please login !!",
-      relogin: true
+      relogin: true,
     });
   }
 
@@ -20,7 +20,7 @@ const RefreshAccessToken = async (req, res) => {
     if (!userInfo) {
       return res.status(401).json({
         message: "Invalid refresh token, Please login again",
-        relogin: true
+        relogin: true,
       });
     }
 
@@ -45,11 +45,15 @@ const RefreshAccessToken = async (req, res) => {
       })
       .json({
         message: "New access token is genrated",
+        user: {
+          id: userInfo._id,
+          email: userInfo.email,
+        },
       });
   } catch (error) {
     return res.status(401).json({
       message: "refresh token expired, Please login again",
-      relogin: true
+      relogin: true,
     });
   }
 };

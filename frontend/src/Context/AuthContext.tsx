@@ -1,47 +1,26 @@
-import { createContext, useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
-import { jwtDecode } from "jwt-decode";
+import { createContext, useState } from "react";
+
 interface User {
   id: string;
   email: string;
 }
+interface UserContextType {
+  isAuthenticated: boolean;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+}
 
-export const UserDetails = createContext({
+export const UserDetails = createContext<UserContextType>({
   isAuthenticated: false,
-  setIsAuthenticated: (isAuthenticated: boolean) => {},
+  setIsAuthenticated: () => {},
   user: null,
-  setUser: (user: User) => {},
+  setUser: () => {},
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
-  const [cookie] = useCookies(["accessToken", "refreshToken"]);
-
-  useEffect(() => {
-    const checkAuth = () => {
-      if (cookie.accessToken) {
-        try {
-          const decoded = jwtDecode<User>(cookie.accessToken);
-
-          setIsAuthenticated(true);
-          setUser(decoded);
-        } catch (error) {
-          console.error("Error decoding access token:", error);
-          setIsAuthenticated(false);
-          setUser(null);
-        }
-      }
-      setIsLoading(false);
-    };
-
-    checkAuth();
-  }, [cookie.accessToken]);
-
-  if (isLoading) {
-    return <div>Loading... from context component</div>;
-  }
 
   return (
     <UserDetails.Provider

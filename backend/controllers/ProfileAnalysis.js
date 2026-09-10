@@ -38,8 +38,10 @@ const LLM_ProfileAnalysis = async (req, res) => {
     Only JSON.    
     `;
 
+    console.log("Prompt sent to LLM:", prompt);
     const LLM_response = await GenrateText(prompt);
 
+    console.log("LLM Response:", LLM_response);
     const {
       recommended_categories,
       personality_traits,

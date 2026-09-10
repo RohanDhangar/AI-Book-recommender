@@ -27,19 +27,12 @@ function ProfilePage() {
         return;
       }
       const userData = await response.json();
+      // console.log("User data fetched:", userData);
       setData(userData.Data);
     } catch (error) {
       console.error("Error fetching user profile:", error);
     }
   };
-
-  const [name, setName] = useState(data?.name || "");
-  const [email, setEmail] = useState(data?.email || "");
-  const [instagramDetails, setInstagramDetails] = useState(data?.instagramDetails || "");
-  const [linkedinDetails, setLinkedinDetails] = useState(data?.linkedinDetails || "");
-  const [twitterDetails, setTwitterDetails] = useState(data?.twitterDetails || "");
-  const [bio, setBio] = useState(data?.bio || "");
-  const [interests, setInterests] = useState(data?.interests || []);
 
   useEffect(() => {
     fetchUserProfile();
@@ -53,13 +46,13 @@ function ProfilePage() {
         <h1>User Profile</h1>
         {data ? (
           <div>
-            <p><strong>Name:</strong> {name}</p>
-            <p><strong>Email:</strong> {email}</p>
-            <p><strong>Instagram:</strong> {instagramDetails}</p>
-            <p><strong>LinkedIn:</strong> {linkedinDetails}</p>
-            <p><strong>Twitter:</strong> {twitterDetails}</p>
-            <p><strong>Bio:</strong> {bio}</p>
-            <p><strong>Interests:</strong> {interests.join(", ")}</p>
+            <p><strong>Name:</strong> {data.name}</p>
+            <p><strong>Email:</strong> {data.email}</p>
+            <p><strong>Instagram:</strong> {data.instagramDetails}</p>
+            <p><strong>LinkedIn:</strong> {data.linkedinDetails}</p>
+            <p><strong>Twitter:</strong> {data.twitterDetails}</p>
+            <p><strong>Bio:</strong> {data.bio}</p>
+            <p><strong>Interests:</strong> {data.interests}</p>
           </div>
         ) : (
           <p>Loading...</p>
