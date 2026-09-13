@@ -13,7 +13,7 @@ const GetUserDetails = async (req, res) => {
 
     const userDetails = await User.findOne({ email });
 
-    console.log("userDetails fetched from database:", userDetails);
+    // console.log("userDetails fetched from database:", userDetails);
 
     if (!userDetails) {
       return res.status(500).json({

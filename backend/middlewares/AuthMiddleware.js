@@ -14,12 +14,15 @@ const verifyIdentity = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET_KEY);
+    // console.log("decoded token:", decoded);
     req.email = decoded.email;
-    // console.log("decoded email from token:", req.email);
+    // console.log("decoded email from token:", req.body.email);
     req.id = decoded.id;
-    // console.log("decoded id from token:", req.id);
+    // console.log("decoded id from token:", req.body.id);
     next();
   } catch (error) {
+    // console.log(error.name);
+    // console.log(error.message);
     if (error.name == "TokenExpiredError") {
       return res.status(401).json({
         message: "Token expired",
@@ -27,6 +30,7 @@ const verifyIdentity = async (req, res, next) => {
       });
     }
 
+    // console.log(token);
     return res.status(401).json({
       message: "Invalid Token",
     });

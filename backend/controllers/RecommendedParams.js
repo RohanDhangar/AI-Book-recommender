@@ -4,7 +4,7 @@ import User from "../models/User.js";
 
 const ParametersForSearchingBooks = async (req) => {
   try {
-    const { email } = req.body;
+    const { email } = req;
 
     const findedUser = await User.findOne({ email });
 

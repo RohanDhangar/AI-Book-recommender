@@ -4,7 +4,7 @@ import ProfileData from "../models/ProfileData.js";
 
 const LLM_ProfileAnalysis = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email } = req;
 
     const userDetails = await User.findOne({ email });
 
