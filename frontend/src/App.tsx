@@ -22,7 +22,7 @@ function App() {
           <Route path="listBooks" element={<ListBooks />} />
           <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} /> // protected route
           <Route path="logout" element={<ProtectedRoute><LogoutButton /></ProtectedRoute>} /> // protected route
-          <Route path="suggested-books" element={<SuggestedBooks />} /> // protected route
+          <Route path="suggested-books" element={<ProtectedRoute><SuggestedBooks /></ProtectedRoute>} /> // protected route
         </Route>
       </Routes>
     </BrowserRouter>

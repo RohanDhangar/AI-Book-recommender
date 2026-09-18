@@ -1,7 +1,0 @@
-Frontend:
-
-1. Handling the protected routes.
-2. Handling the profileProccessed variable.
-3. 
-
-Backend:

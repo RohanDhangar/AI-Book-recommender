@@ -13,6 +13,7 @@ import LLM_ProfileAnalysis from "./controllers/ProfileAnalysis.js";
 import cors from "cors";
 import { GetUserDetails } from "./controllers/UserFunctions/UserDetails.js";
 import cookieParser from "cookie-parser";
+import { GetBooksDetails } from "./controllers/BooksFunction/BookDetails.js";
 
 const app = express();
 const port = 2000;
@@ -41,6 +42,7 @@ app.post("/login", LoginUser);
 
 // protected routes
 app.get("/userDetails", verifyIdentity, GetUserDetails);
+app.get("/getBooks", verifyIdentity, GetBooksDetails);
 app.get("/profile-processed", verifyIdentity, LLM_ProfileAnalysis); // to be added authmiddleware for protected route
 app.get("/recommended-Books", verifyIdentity, RecommendedBooks); // to be added authmiddleware for protected route
 app.post("/logout", verifyIdentity, LogoutUser);
