@@ -12,6 +12,8 @@ interface UserProfile {
   resumeText: string;
   recommendationGenerated: boolean;
   profileProcessed: boolean;
+  learningGoals: string[];
+  recommendedCategories: string[];
 }
 
 function ProfilePage() {
@@ -77,6 +79,8 @@ function ProfilePage() {
             <p><strong>Twitter:</strong> {data.twitterDetails}</p>
             <p><strong>Description:</strong> {data.description}</p>
             <p><strong>Interests:</strong> {data.interest.join(", ")}</p>
+            <p><strong>Learning Goals:</strong> {data.learningGoals.join(", ")}</p>
+            <p><strong>Recommended Categories:</strong> {data.recommendedCategories.join(", ")}</p>
 
             <>
             {data.profileProcessed ? (

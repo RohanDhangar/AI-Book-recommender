@@ -1,19 +1,19 @@
 import User from "../../models/User.js";
+import ProfileData from "../../models/ProfileData.js";
 
 const GetUserDetails = async (req, res) => {
   // Implementation for fetching user details
   try {
-
     // console.log("Request body received:", req);
-    const { email } = req;
+    const { email, id } = req;
     // console.log("email from request body:", email);
     if (!email) {
       throw Error("Unable to get the email from request, Please login to app");
     }
 
     const userDetails = await User.findOne({ email });
-
-    // console.log("userDetails fetched from database:", userDetails);
+    const profileDetails = await ProfileData.findOne({ userID: id });
+    // console.log("userDetails fetched from database:", profileDetails);
 
     if (!userDetails) {
       return res.status(500).json({
@@ -21,9 +21,24 @@ const GetUserDetails = async (req, res) => {
       });
     }
 
+    // console.log(userDetails);
+
+    if (!profileDetails) {
+      return res.status(500).json({
+        message: "unable to get the profile details of user, please try again",
+      });
+    }
+
+    const userData = userDetails.toObject();
+
+    userData.learningGoals = profileDetails.profileAnalysis.learningGoals;
+
+    userData.recommendedCategories =
+      profileDetails.profileAnalysis.recommendedCategories;
+
     return res.status(200).json({
       message: "Details fetched",
-      Data: userDetails,
+      Data: userData,
     });
   } catch (error) {
     res.status(500).json({

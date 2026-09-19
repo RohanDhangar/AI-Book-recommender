@@ -25,6 +25,14 @@ function LoginPage() {
             body: JSON.stringify(payload)
         })
         const data = await response.json();
+        if(data.success == false){
+          alert(data.error);
+          navigate("/login");
+          setEmail("");
+          setPassword("");
+          return;
+
+        }
         console.log("login successfully", data);
         setIsAuthenticated(true);
         navigate("/");
