@@ -120,7 +120,7 @@ function CompleteYourProfile() {
           </label>
 
           <label className="block sm:col-span-2">
-            <span className="text-sm font-medium text-stone-700">Tell us about yourself</span>
+            <span className="text-sm font-medium text-stone-700">Tell us about yourself - This field is optional, But we heavily recommend filling it out for better recommendations</span>
             <textarea
               placeholder="A short description about your work, interests, or what you want to learn..."
               value={description}
@@ -132,7 +132,7 @@ function CompleteYourProfile() {
 
           <div className="sm:col-span-2">
             <label className="block">
-              <span className="text-sm font-medium text-stone-700">Interests</span>
+              <span className="text-sm font-medium text-stone-700">Interests - Please let us know your interests</span>
               <input
                 type="text"
                 placeholder="Type an interest and press Enter"
@@ -173,7 +173,7 @@ function CompleteYourProfile() {
           </div>
 
           <label className="block sm:col-span-2">
-            <span className="text-sm font-medium text-stone-700">Resume</span>
+            <span className="text-sm font-medium text-stone-700">Resume *</span>
             <div className="mt-2 rounded-xl border border-dashed border-stone-300 bg-stone-50 p-5">
               <input
                 type="file"
