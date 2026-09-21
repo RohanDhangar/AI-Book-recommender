@@ -16,12 +16,13 @@ import cookieParser from "cookie-parser";
 import { GetBooksDetails } from "./controllers/BooksFunction/BookDetails.js";
 
 const app = express();
-const port = 2000;
+const port = process.env.PORT || 2000;
 
 app.use(cookieParser());
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   }),
 );
@@ -39,15 +40,13 @@ app.post("/register", upload.single("resume"), RegisterUser);
 app.post("/refresh-token", RefreshAccessToken);
 app.post("/login", LoginUser);
 
-
 // protected routes
 app.get("/userDetails", verifyIdentity, GetUserDetails);
 app.get("/getBooks", verifyIdentity, GetBooksDetails);
-app.get("/profile-processed", verifyIdentity, LLM_ProfileAnalysis); // to be added authmiddleware for protected route
-app.get("/recommended-Books", verifyIdentity, RecommendedBooks); // to be added authmiddleware for protected route
+app.get("/profile-processed", verifyIdentity, LLM_ProfileAnalysis);
+app.get("/recommended-Books", verifyIdentity, RecommendedBooks);
 app.post("/logout", verifyIdentity, LogoutUser);
 
-
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`server started at ${port}`);
 });

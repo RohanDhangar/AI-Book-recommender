@@ -5,6 +5,8 @@ import User from "../models/User.js";
 const RefreshAccessToken = async (req, res) => {
   const token = req.cookies.refreshToken;
 
+  const isProduction = process.env.NODE_ENV === "production";
+
   if (!token) {
     return res.status(401).json({
       message: "Please login !!",
@@ -13,9 +15,14 @@ const RefreshAccessToken = async (req, res) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET_KEY);
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_REFRESH_SECRET_KEY,
+    );
 
-    const userInfo = await User.findOne({ _id: decoded.id });
+    const userInfo = await User.findOne({
+      _id: decoded.id,
+    });
 
     if (!userInfo) {
       return res.status(401).json({
@@ -39,8 +46,8 @@ const RefreshAccessToken = async (req, res) => {
       .status(201)
       .cookie("accessToken", newAccessToken, {
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "strict",
         maxAge: 15 * 60 * 1000,
       })
       .json({

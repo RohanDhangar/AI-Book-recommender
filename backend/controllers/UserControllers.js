@@ -25,8 +25,7 @@ const RegisterUser = async (req, res) => {
     }
 
     filePath = req.file.path;
-    // console.log("I have reached this point");
-    // console.log(name, email, oldPassword);
+
     if (!name || !email || !oldPassword) {
       throw new Error("Please provide complete details");
     }
@@ -93,6 +92,7 @@ const LoginUser = async (req, res) => {
     if (!user) {
       throw new Error("Please register to the app");
     }
+
     console.log(user);
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -122,18 +122,20 @@ const LoginUser = async (req, res) => {
       user.refreshToken = refresh_token;
       await user.save();
 
+      const isProduction = process.env.NODE_ENV === "production";
+
       res
         .status(200)
         .cookie("accessToken", access_token, {
           httpOnly: true,
-          secure: false,
-          sameSite: "strict",
+          secure: isProduction,
+          sameSite: isProduction ? "none" : "strict",
           maxAge: 15 * 60 * 1000,
         })
         .cookie("refreshToken", refresh_token, {
           httpOnly: true,
-          secure: false,
-          sameSite: "strict",
+          secure: isProduction,
+          sameSite: isProduction ? "none" : "strict",
           maxAge: 7 * 24 * 60 * 60 * 1000,
         })
         .json({
@@ -146,6 +148,7 @@ const LoginUser = async (req, res) => {
     }
   } catch (error) {
     console.error("Error creating user:", error);
+
     return res.status(500).json({
       success: false,
       message: "Server error, failed to login",
@@ -157,30 +160,36 @@ const LoginUser = async (req, res) => {
 const LogoutUser = async (req, res) => {
   try {
     const email = req.email;
+
     if (!email) {
       throw new Error("Please login !!");
     }
 
     const user = await User.findOne({ email });
+
     user.refreshToken = "";
     await user.save();
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.clearCookie("accessToken", {
       httpOnly: true,
-      secure: false,
-      sameSite: "strict",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "strict",
     });
+
     res
       .clearCookie("refreshToken", {
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "strict",
       })
       .json({
         message: "successfully logout",
       });
   } catch (error) {
     console.error("Error creating user:", error);
+
     return res.status(500).json({
       success: false,
       message: "Server error, failed to logout",
