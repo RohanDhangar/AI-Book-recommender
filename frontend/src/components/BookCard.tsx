@@ -22,17 +22,16 @@ export default function BookCard({
   const year = publishedDate ? new Date(publishedDate).getFullYear() : null;
 
   return (
-    <div className="group flex flex-col bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-      {/* Cover Image */}
-      <div className="relative bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center h-52 overflow-hidden">
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-lg">
+      <div className="relative flex h-64 items-center justify-center overflow-hidden bg-stone-100">
         {thumbnail ? (
           <img
             src={thumbnail}
             alt={title}
-            className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
           />
         ) : (
-          <div className="flex flex-col items-center justify-center gap-2 text-zinc-400 dark:text-zinc-600">
+          <div className="flex flex-col items-center gap-2 text-stone-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-10 w-10"
@@ -44,81 +43,55 @@ export default function BookCard({
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={1.5}
-                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
               />
             </svg>
-            <span className="text-xs">No Cover</span>
+            <span className="text-xs">No cover</span>
           </div>
         )}
 
-        {/* Year badge */}
         {year && (
-          <span className="absolute top-2 right-2 bg-black/60 text-white text-xs font-medium px-2 py-0.5 rounded-full backdrop-blur-sm">
+          <span className="absolute right-3 top-3 rounded-full bg-stone-900/75 px-2.5 py-1 text-xs font-medium text-white backdrop-blur">
             {year}
           </span>
         )}
       </div>
 
-      {/* Content */}
-      <div className="flex flex-col flex-1 p-4 gap-3">
-        {/* Title + Subtitle */}
-        <div>
-          <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 text-base leading-snug line-clamp-2">
-            {title}
-          </h3>
-          {subtitle && (
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 line-clamp-1">
-              {subtitle}
-            </p>
-          )}
-        </div>
+      <div className="flex flex-1 flex-col p-4">
+        <h3 className="line-clamp-2 text-base font-semibold leading-snug text-stone-900">
+          {title}
+        </h3>
 
-        {/* Authors */}
+        {subtitle && (
+          <p className="mt-1 line-clamp-1 text-xs text-stone-500">{subtitle}</p>
+        )}
+
         {authors && authors.length > 0 && (
-          <p className="text-sm text-indigo-600 dark:text-indigo-400 font-medium line-clamp-1">
+          <p className="mt-3 line-clamp-1 text-sm font-medium text-amber-700">
             {authors.join(", ")}
           </p>
         )}
 
-        {/* Description */}
         {description && (
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-3 leading-relaxed flex-1">
+          <p className="mt-3 line-clamp-4 flex-1 text-sm leading-6 text-stone-500">
             {description}
           </p>
         )}
 
-        {/* Footer Meta */}
-        <div className="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800 mt-auto">
+        <div className="mt-5 flex min-h-7 items-center justify-between border-t border-stone-100 pt-3">
           {pageCount ? (
-            <span className="flex items-center gap-1 text-xs text-zinc-400 dark:text-zinc-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-3.5 w-3.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              {pageCount} pages
-            </span>
+            <span className="text-xs text-stone-400">{pageCount} pages</span>
           ) : (
             <span />
           )}
 
-          {/* Categories */}
           {categories && categories.length > 0 && (
-            <span className="text-xs bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-300 px-2 py-0.5 rounded-full font-medium truncate max-w-[120px]">
+            <span className="max-w-[140px] truncate rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800">
               {categories[0]}
             </span>
           )}
         </div>
       </div>
-    </div>
+    </article>
   );
 }

@@ -15,14 +15,42 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<ProtectedRoute isHome><Home /></ProtectedRoute>} />
+          <Route
+            index
+            element={
+              <ProtectedRoute isHome>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="complete-profile" element={<CompleteYourProfile />} />
           <Route path="listBooks" element={<ListBooks />} />
-          <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} /> // protected route
-          <Route path="logout" element={<ProtectedRoute><LogoutButton /></ProtectedRoute>} /> // protected route
-          <Route path="suggested-books" element={<ProtectedRoute><SuggestedBooks /></ProtectedRoute>} /> // protected route
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="logout"
+            element={
+              <ProtectedRoute>
+                <LogoutButton />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="suggested-books"
+            element={
+              <ProtectedRoute>
+                <SuggestedBooks />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

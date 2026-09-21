@@ -22,14 +22,17 @@ const GetUserDetails = async (req, res) => {
     }
 
     // console.log(userDetails);
+    const userData = userDetails.toObject();
 
     if (!profileDetails) {
-      return res.status(500).json({
-        message: "unable to get the profile details of user, please try again",
+      userData.learningGoals = [];
+      userData.recommendedCategories = [];
+
+      return res.status(200).json({
+        message: "User details fetched, profile not processed yet",
+        Data: userData,
       });
     }
-
-    const userData = userDetails.toObject();
 
     userData.learningGoals = profileDetails.profileAnalysis.learningGoals;
 

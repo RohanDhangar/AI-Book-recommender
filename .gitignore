@@ -14,6 +14,7 @@ dist-ssr
 .env
 .env.*.local
 APIresponseViewer.js
+Utils_For_Project
 Problem Faced & learnings.docx
 ~$oblem Faced & learnings.docx
 
@@ -27,3 +28,9 @@ Problem Faced & learnings.docx
 *.njsproj
 *.sln
 *.sw?
+node_modules
+.DS_Store
+dist
+.env
+.env.local
+.env.*.local
